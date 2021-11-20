@@ -75,7 +75,8 @@ const transfer = async (req, res) => {
 
                     user2 = updatedData;
                     res.status(200).json({
-                        user1, user2
+                        sender:user1, 
+                        reciver:user2
                     })
                 })
             })
