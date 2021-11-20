@@ -62,6 +62,12 @@ const withdraw = (req, res) => {
         })
     })
 }
+const changeActive = (req, res) => {
+    users.findOneAndUpdate({ passportID: req.params.id }, { isActive: req.body.isActive }, { new: true }, (err, data) => {
+        if (err) return res.status(404).json(err);
+        res.status(200).json(data)
+    })
+}
 
 const transfer = async (req, res) => {
     let user1, user2;
@@ -106,5 +112,6 @@ module.exports = {
     deposit,
     withdraw,
     transfer,
-    credit
+    credit,
+    changeActive
 }

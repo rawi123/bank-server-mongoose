@@ -24,10 +24,7 @@ router.put("/credit/:id", (req, res) => {
 })
 
 router.put("/active/:id", (req, res) => {
-    if (typeof req.body.isActive !== "boolean") {
-        return res.status(404).send("Invalid input");
-    }
-    updateSingleVar(req.params.id, { "isActive": req.body.isActive }, res, true)
+    serverFunc.changeActive(req,res);
 })
 
 router.put("/withdraw/:id", (req, res) => {
