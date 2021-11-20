@@ -18,7 +18,7 @@ app.use("/", useRouter);
 
 mongoose.connect('mongodb+srv://rawi:rawi1234@cluster0.exbid.mongodb.net/users?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(data => {
-        app.listen(4000);
+        app.listen(process.env.PORT || 4000);
         console.log("connected to db port 4000");
     })
     .catch(err => console.log(err))
