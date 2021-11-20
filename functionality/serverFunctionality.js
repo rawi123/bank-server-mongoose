@@ -67,6 +67,9 @@ const transfer = async (req, res) => {
     let user1, user2;
     users.findOne({ passportID: req.params.id1, isActive: true }, (err, data) => {
         if (err) return res.status(404).json(err)
+        if (data.cash + data.credit < req.body.ammount) {
+            return res.status(404).json("not enought money")
+        }
         users.findOneAndUpdate({ passportID: req.params.id1, isActive: true }, { cash: Number(data.cash) - Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
 
             if (error) return res.status(404).json(error)
