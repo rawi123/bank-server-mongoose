@@ -16,7 +16,7 @@ app.use("/", useRouter);
 
 
 
-mongoose.connect('mongodb://localhost/users', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://rawi:rawi1234@cluster0.exbid.mongodb.net/users?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(data => {
         app.listen(4000);
         console.log("connected to db port 4000");
