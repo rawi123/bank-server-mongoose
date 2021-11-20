@@ -21,11 +21,6 @@ router.delete("/:id", (req, res) => {//delete a user
 
 router.put("/credit/:id", (req, res) => {
     serverFunc.credit(req, res);
-    if (parseFloat(req.body.ammount) != req.body.ammount) {
-        return res.status(404).send("Invalid input");
-    }
-
-    updateSingleVar(req.params.id, { "credit": req.body.ammount }, res)
 })
 
 router.put("/active/:id", (req, res) => {
