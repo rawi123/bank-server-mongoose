@@ -102,5 +102,6 @@ module.exports = {
     addNewUser,
     deposit,
     withdraw,
-    transfer
+    transfer,
+    credit
 }
