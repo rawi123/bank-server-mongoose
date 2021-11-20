@@ -31,6 +31,13 @@ const deleteUser = (req, res) => {
     })
 }
 
+const credit = (req, res) => {
+    users.findOneAndUpdate({ passportID: req.params.id }, { credit: req.body.ammount }, { new: true }, (err, data) => {
+        if (err) return res.status(404).json(err);
+        res.status(200).json(data)
+    })
+}
+
 const deposit = (req, res) => {
     users.findOne({ passportID: req.params.id, isActive: true }, (err, data) => {
         if (data) {
@@ -75,8 +82,8 @@ const transfer = async (req, res) => {
 
                     user2 = updatedData;
                     res.status(200).json({
-                        sender:user1, 
-                        reciver:user2
+                        sender: user1,
+                        reciver: user2
                     })
                 })
             })
