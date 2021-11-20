@@ -46,16 +46,16 @@ const updateUser = (id, obj, changingActive = false) => {
 }
 
 const deleteUser = (req, res) => {
-    users.findByIdAndDelete(req.params.id, (err, data) => {
+    users.findOneAndDelete({ passportID: req.params.id }, (err, data) => {
         if (err) return res.status(404).json(err);
         res.status(200).json(data)
     })
 }
 
 const deposit = (req, res) => {
-    users.findOne({ _id: req.params.id, isActive: true }, (err, data) => {
+    users.findOne({ passportID: req.params.id, isActive: true }, (err, data) => {
         if (data) {
-            users.findByIdAndUpdate(req.params.id, { cash: Number(data.cash) + Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
+            users.findOneAndUpdate({ passportID: req.params.id }, { cash: Number(data.cash) + Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
                 if (error) return res.status(404).json(error)
                 return res.status(200).json(updatedData)
             })
@@ -65,7 +65,7 @@ const deposit = (req, res) => {
 }
 
 const withdraw = (req, res) => {
-    users.findOne({ _id: req.params.id, isActive: true }, (err, data) => {
+    users.findOne({ passportID: req.params.id, isActive: true }, (err, data) => {
         if (err) return res.status(404).json(err)
         if (data.cash + data.credit < req.body.ammount) {
             return res.status(404).json("not enought money")
@@ -79,18 +79,18 @@ const withdraw = (req, res) => {
 
 const transfer = async (req, res) => {
     let user1, user2;
-    users.findOne({ _id: req.params.id1, isActive: true }, (err, data) => {
+    users.findOne({ passportID: req.params.id1, isActive: true }, (err, data) => {
         if (err) return res.status(404).json(err)
-        users.findOneAndUpdate({ _id: req.params.id1, isActive: true }, { cash: Number(data.cash) - Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
+        users.findOneAndUpdate({ passportID: req.params.id1, isActive: true }, { cash: Number(data.cash) - Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
 
             if (error) return res.status(404).json(error)
             user1 = updatedData;
 
-            users.findOne({ _id: req.params.id2, isActive: true }, (err, data) => {
+            users.findOne({ passportID: req.params.id2, isActive: true }, (err, data) => {
 
                 if (err) return res.status(404).json(err)
 
-                users.findByIdAndUpdate(req.params.id2, { cash: Number(data.cash) + Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
+                users.findOneAndUpdate({ passportID: req.params.id2 }, { cash: Number(data.cash) + Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
 
                     if (error) return res.status(404).json(error)
 
