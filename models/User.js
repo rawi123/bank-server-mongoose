@@ -21,6 +21,12 @@ const userSchema = new Schema({
     },
 })
 
+userSchema.methods.toJSON = function () {
+    const userObject = this.toObject()
+    delete userObject.__v
+    delete userObject._id
+    return userObject
+}
 
 
 const user = mongoose.model("users", userSchema);

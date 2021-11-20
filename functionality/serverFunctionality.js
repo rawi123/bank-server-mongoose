@@ -8,7 +8,7 @@ const getAllUsers = (req, res) => {
 
 
 const getSingleUser = (req, res) => {//return the user if its found else return falsy value
-    users.findById(req.params.id, (err, data) => {
+    users.findOne({ passportID: req.params.id }, (err, data) => {
         if (err) return res.status(404).json(err);
         res.status(200).json(data)
     });
@@ -22,28 +22,7 @@ const addNewUser = (req, res) => {
     })
 }
 
-const updateUser = (id, obj, changingActive = false) => {
-    const data = getAllUsers();
-    const user = data.find(user => user.passportID === Number(id));
 
-    if (!changingActive && user && !user.isActive) {
-        return "User inactive";
-    }
-
-    if (user) {
-        for (const variable in obj) {
-            if (variable !== "isActive" || changingActive)
-                user[variable] = user[variable] !== undefined ? obj[variable] : undefined
-        }
-
-        updateAllUsers(data);
-        return user;
-    }
-
-    else {
-        return "User not found!";
-    }
-}
 
 const deleteUser = (req, res) => {
     users.findOneAndDelete({ passportID: req.params.id }, (err, data) => {
@@ -70,7 +49,7 @@ const withdraw = (req, res) => {
         if (data.cash + data.credit < req.body.ammount) {
             return res.status(404).json("not enought money")
         }
-        users.findOneAndUpdate({ _id: req.params.id, isActive: true }, { cash: Number(data.cash) - Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
+        users.findOneAndUpdate({ passportID: req.params.id }, { cash: Number(data.cash) - Number(req.body.ammount) }, { new: true }, (error, updatedData) => {
             if (error) return res.status(404).json(error)
             res.status(200).json(updatedData)
         })
@@ -111,7 +90,6 @@ const transfer = async (req, res) => {
 module.exports = {
     getAllUsers,
     getSingleUser,
-    updateUser,
     deleteUser,
     addNewUser,
     deposit,
